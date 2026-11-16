@@ -1,0 +1,308 @@
+:root {
+    --green: #18392b;
+    --green2: #285b43;
+    --cream: #f5f3ec;
+    --paper: #ffffff;
+    --muted: #718078;
+    --gold: #e8bd55;
+    --red: #b94b4b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--cream);
+    color: #203229;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    background: var(--green);
+    color: white;
+    padding: 24px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(22px, 4vw, 30px);
+}
+
+header p {
+    margin: 6px 0 0;
+    color: #d4e2d8;
+}
+
+.brand {
+    font-size: 32px;
+}
+
+nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 14px 5%;
+    background: #e6ebe5;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+button {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 15px;
+    background: var(--green2);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.navbtn {
+    background: white;
+    color: var(--green);
+    border: 1px solid #d2ddd4;
+}
+
+.navbtn.active {
+    background: var(--green);
+    color: white;
+}
+
+main {
+    max-width: 1100px;
+    margin: 25px auto;
+    padding: 0 18px 45px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+h2 {
+    color: var(--green);
+    margin-top: 0;
+}
+
+.panel {
+    background: var(--paper);
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 3px 14px #193a2b10;
+    margin-bottom: 18px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.stat {
+    background: #edf3ed;
+    border-radius: 12px;
+    padding: 17px;
+}
+
+.stat strong {
+    display: block;
+    font-size: 25px;
+    color: var(--green);
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccd7ce;
+    border-radius: 8px;
+    margin: 6px 0 13px;
+    font: inherit;
+    background: white;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.row > * {
+    flex: 1;
+}
+
+.small {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.notice {
+    padding: 12px;
+    background: #f3f6f1;
+    border-radius: 9px;
+    color: #46564b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 11px 8px;
+    border-bottom: 1px solid #e5ebe5;
+    font-size: 14px;
+}
+
+th {
+    color: var(--green);
+}
+
+.danger {
+    background: var(--red);
+}
+
+.secondary {
+    background: #68796e;
+}
+
+.gold {
+    background: #a77919;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* CHESS BOARD */
+
+.board-wrap {
+    max-width: 510px;
+    margin: 16px auto;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border: 5px solid var(--green);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.square {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(23px, 6.5vw, 49px);
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.light {
+    background: #f0d9b5;
+}
+
+.dark {
+    background: #b58863;
+}
+
+.square.selected {
+    box-shadow: inset 0 0 0 5px #f5ce45;
+}
+
+.square.target::after {
+    content: "";
+    width: 22%;
+    height: 22%;
+    border-radius: 50%;
+    background: #235d38a8;
+    position: absolute;
+}
+
+.puzzlebar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.status {
+    text-align: center;
+    font-weight: bold;
+    margin: 12px 0;
+    min-height: 22px;
+}
+
+#puzzleHint {
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    padding: 20px;
+    font-size: 12px;
+}
+
+@media(max-width:600px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        position: static;
+        padding: 12px;
+    }
+
+    nav button {
+        flex: 1;
+        min-width: 42%;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    th,
+    td {
+        font-size: 12px;
+        padding: 8px 4px;
+    }
+}
