@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Training Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<header>
+    <div>
+        <h1>♟ Chess Training Assistant</h1>
+        <p>Latihan, catat pertandingan, dan pantau perkembangan caturmu.</p>
+    </div>
+    <div class="brand">♔</div>
+</header>
+
+<nav>
+    <button class="navbtn active" data-page="home">Beranda</button>
+    <button class="navbtn" data-page="profile">Profil</button>
+    <button class="navbtn" data-page="matches">Match Tracker</button>
+    <button class="navbtn" data-page="puzzles">Chess Puzzle</button>
+    <button class="navbtn" data-page="analysis">Analisis</button>
+</nav>
+
+<main>
+
+    <!-- BERANDA -->
+    <section id="home" class="page active">
+        <div class="panel">
+            <h2>Selamat datang di Chess Training Assistant!</h2>
+            <p>Gunakan aplikasi ini untuk menyimpan profil, mencatat pertandingan, mengerjakan puzzle, dan melihat statistik latihan.</p>
+
+            <div class="grid">
+                <div class="stat">
+                    <strong id="homeGames">0</strong>
+                    <span>Total pertandingan</span>
+                </div>
+                <div class="stat">
+                    <strong id="homeWins">0</strong>
+                    <span>Kemenangan</span>
+                </div>
+                <div class="stat">
+                    <strong id="homePuzzle">0</strong>
+                    <span>Puzzle terselesaikan</span>
+                </div>
+                <div class="stat">
+                    <strong id="homeRate">0%</strong>
+                    <span>Win rate</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Mulai latihan</h2>
+            <div class="grid">
+                <button onclick="showPage('profile')">Atur Profil</button>
+                <button onclick="showPage('matches')">Catat Pertandingan</button>
+                <button onclick="showPage('puzzles')">Mulai Chess Puzzle</button>
+                <button onclick="showPage('analysis')">Lihat Analisis</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFIL -->
+    <section id="profile" class="page">
+        <div class="panel">
+            <h2>Player Profile</h2>
+
+            <label>Nama pemain</label>
+            <input id="playerName" placeholder="Masukkan nama pemain">
+
+            <label>Rating catur</label>
+            <input id="playerRating" type="number" min="0" placeholder="Contoh: 1500">
+
+            <label>Target latihan</label>
+            <select id="playerGoal">
+                <option>Latihan rutin</option>
+                <option>Meningkatkan taktik</option>
+                <option>Meningkatkan strategi</option>
+                <option>Persiapan turnamen</option>
+            </select>
+
+            <button onclick="saveProfile()">Simpan Profil</button>
+            <p id="profileMessage" class="small"></p>
+        </div>
+
+        <div class="panel">
+            <h2>Profil saat ini</h2>
+            <p id="profileSummary" class="notice">Belum ada profil yang disimpan.</p>
+        </div>
+    </section>
+
+    <!-- MATCH TRACKER -->
+    <section id="matches" class="page">
+        <div class="panel">
+            <h2>Match Tracker</h2>
+
+            <div class="row">
+                <div>
+                    <label>Nama lawan</label>
+                    <input id="opponent" placeholder="Nama lawan">
+                </div>
+                <div>
+                    <label>Tanggal</label>
+                    <input id="matchDate" type="date">
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>Hasil</label>
+                    <select id="matchResult">
+                        <option value="Menang">Menang</option>
+                        <option value="Seri">Seri</option>
+                        <option value="Kalah">Kalah</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Warna bidak</label>
+                    <select id="matchColor">
+                        <option>Putih</option>
+                        <option>Hitam</option>
+                    </select>
+                </div>
+            </div>
+
+            <label>Catatan pertandingan</label>
+            <textarea id="matchNotes" rows="2" placeholder="Catatan pertandingan"></textarea>
+
+            <button onclick="addMatch()">Simpan Pertandingan</button>
+        </div>
+
+        <div class="panel">
+            <h2>Riwayat pertandingan</h2>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Lawan</th>
+                            <th>Hasil</th>
+                            <th>Warna</th>
+                            <th>Catatan</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="matchRows"></tbody>
+                </table>
+            </div>
+            <p id="emptyMatches" class="small">Belum ada pertandingan.</p>
+        </div>
+    </section>
+
+    <!-- CHESS PUZZLE -->
+    <section id="puzzles" class="page">
+        <div class="panel">
+            <h2>Chess Puzzle Training</h2>
+            <p class="small">Koneksi internet diperlukan untuk memuat puzzle.</p>
+
+            <div class="row">
+                <div>
+                    <label>Tingkat kesulitan</label>
+                    <select id="puzzleLevel">
+                        <option value="beginner">Beginner (800–1399)</option>
+                        <option value="intermediate" selected>Intermediate (1400–1799)</option>
+                        <option value="advanced">Advanced (1800–2199)</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Jumlah puzzle</label>
+                    <select id="puzzleCount">
+                        <option>10</option>
+                        <option>25</option>
+                        <option selected>50</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="loadPuzzlesBtn" onclick="loadPuzzleSet()">Muat Puzzle</button>
+
+            <div class="grid puzzle-stats">
+                <div class="stat">
+                    <strong id="puzzleNumber">0 / 0</strong>
+                    <span>Puzzle</span>
+                </div>
+                <div class="stat">
+                    <strong id="puzzleRating">-</strong>
+                    <span>Rating puzzle</span>
+                </div>
+                <div class="stat">
+                    <strong id="puzzleScore">0</strong>
+                    <span>Skor latihan</span>
+                </div>
+            </div>
+
+            <p id="puzzleStatus" class="status">Pilih tingkat kesulitan, lalu muat puzzle.</p>
+
+            <div class="board-wrap">
+                <div id="puzzleBoard" class="board"></div>
+            </div>
+
+            <p id="puzzleTurn" class="status"></p>
+
+            <div class="puzzlebar">
+                <button class="gold" onclick="showPuzzleHint()">Hint</button>
+                <button class="secondary" onclick="restartCurrentPuzzle()">Ulangi</button>
+                <button onclick="nextPuzzle()">Puzzle Berikutnya</button>
+            </div>
+
+            <p id="puzzleHint" class="small"></p>
+            <p id="puzzleResult" class="status"></p>
+        </div>
+    </section>
+
+    <!-- ANALISIS -->
+    <section id="analysis" class="page">
+        <div class="panel">
+            <h2>Performance Analysis</h2>
+
+            <div class="grid">
+                <div class="stat">
+                    <strong id="analysisGames">0</strong>
+                    <span>Total pertandingan</span>
+                </div>
+                <div class="stat">
+                    <strong id="analysisWins">0</strong>
+                    <span>Menang</span>
+                </div>
+                <div class="stat">
+                    <strong id="analysisDraws">0</strong>
+                    <span>Seri</span>
+                </div>
+                <div class="stat">
+                    <strong id="analysisLosses">0</strong>
+                    <span>Kalah</span>
+                </div>
+                <div class="stat">
+                    <strong id="analysisWinRate">0%</strong>
+                    <span>Win rate</span>
+                </div>
+                <div class="stat">
+                    <strong id="analysisSolved">0</strong>
+                    <span>Puzzle selesai</span>
+                </div>
+            </div>
+
+            <h3>Evaluasi latihan</h3>
+            <p id="analysisAdvice" class="notice">Belum ada data latihan.</p>
+
+            <button class="secondary" onclick="exportData()">Unduh Data JSON</button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    Chess Training Assistant
+</footer>
+
+</body>
+</html>
